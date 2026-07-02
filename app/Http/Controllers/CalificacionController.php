@@ -9,7 +9,7 @@ use App\Models\Calificacion;
 
 class CalificacionController extends Controller
 {
-    // Función helper para obtener materias por grado
+    // 1. Función para obtener las materias según el grado
     public static function getMaterias($grado) {
         $grado = strtolower($grado);
         
@@ -25,10 +25,51 @@ class CalificacionController extends Controller
         return [];
     }
 
-    public function index(Request $request) {
+    // 2. Función para mostrar la pantalla con el Buscador y el Filtro
+    public function index(Request $request) 
+    {
         $centros = Centro::all();
         $centro_id = $request->centro_id;
-        $estudiantes = Estudiante::when($centro_id, fn($q) => $q->where('centro_id', $centro_id))->get();
-        return view('calificaciones', compact('estudiantes', 'centros', 'centro_id'));
+        $buscar = $request->buscar; // Capturamos lo que se escribe en el buscador
+
+        // Normalizamos la búsqueda para el Código MINED (convierte a mayúsculas y quita espacios)
+        $buscarNormalizado = null;
+        if ($buscar) {
+            $buscarNormalizado = strtoupper(trim($buscar));
+            $buscarNormalizado = str_replace(' ', '-', $buscarNormalizado); 
+            $buscarNormalizado = preg_replace('/-+/', '-', $buscarNormalizado); // Evita guiones dobles
+        }
+
+        $estudiantes = Estudiante::when($centro_id, function($query) use ($centro_id) {
+                return $query->where('centro_id', $centro_id);
+            })
+            ->when($buscar, function($query) use ($buscar, $buscarNormalizado) {
+                return $query->where(function($q) use ($buscar, $buscarNormalizado) {
+                    // Busca el texto tal cual lo escribiste para los Nombres (ej. "Ana")
+                    $q->where('nombre_completo', 'LIKE', '%' . $buscar . '%')
+                      // Busca la versión "limpia" exclusivamente para el Código MINED (ej. "MIN-1001")
+                      ->orWhere('codigo_mined', 'LIKE', '%' . $buscarNormalizado . '%');
+                });
+            })
+            ->get();
+
+        return view('calificaciones', compact('estudiantes', 'centros', 'centro_id', 'buscar'));
+    }
+
+    // 3. Función para guardar las calificaciones
+    public function store(Request $request)
+    {
+        $parcial = $request->parcial;
+
+        if($request->has('notas')) {
+            foreach($request->notas as $est_id => $materias) {
+                Calificacion::updateOrCreate(
+                    ['estudiante_id' => $est_id, 'parcial' => $parcial],
+                    $materias
+                );
+            }
+        }
+
+        return back()->with('success', 'Calificaciones del Parcial ' . $parcial . ' registradas.');
     }
 }

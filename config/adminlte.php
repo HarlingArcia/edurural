@@ -298,47 +298,59 @@ return [
     |
     */
 
-    'menu' => [
-        
+   'menu' => [
+       
         [
             'text' => 'Inicio',
             'url'  => '/',
             'icon' => 'fas fa-fw fa-home',
             'classes' => 'text-bold',
         ],
+        
         ['header' => 'MÓDULOS DEL SISTEMA'],
-        // Botón Red de Centros
+        
+        
+        [
+            'text' => 'Red de Centros',
+            'url'  => 'centros',
+            'icon' => 'fas fa-fw fa-school text-info',
+        ],
+        
+       
         [
             'text' => 'Docentes',
             'url'  => 'docentes',
             'icon' => 'fas fa-fw fa-chalkboard-teacher text-purple',
         ],
-        // Botón Estudiantes
+        
+      
         [
             'text' => 'Estudiantes',
             'url'  => 'estudiantes',
             'icon' => 'fas fa-fw fa-user-graduate text-success',
         ],
-        // Botón Asistencia Diaria
+        
+       
         [
             'text' => 'Asistencia Diaria',
             'url'  => 'asistencia',
             'icon' => 'fas fa-fw fa-calendar-check text-warning',
         ],
-        // Botón Calificaciones
+        
+       
         [
             'text' => 'Calificaciones',
             'url'  => 'calificaciones',
             'icon' => 'fas fa-fw fa-edit text-danger',
         ],
-        // Botón Reportes
+        
+        
         [
             'text' => 'Reportes y Estadísticas',
             'url'  => 'reportes',
             'icon' => 'fas fa-fw fa-chart-pie text-primary',
         ],
     ],
-    
 
     /*
     |--------------------------------------------------------------------------

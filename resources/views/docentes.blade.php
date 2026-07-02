@@ -24,18 +24,27 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>Nombre Completo</label>
-                            <input type="text" name="nombre_completo" class="form-control" placeholder="Ej. Ana Ramírez" required>
+                            <input type="text" name="nombre_completo" class="form-control" value="{{ old('nombre_completo') }}" placeholder="Ej. Ana Ramírez" required>
                         </div>
-                        <div class="form-group">
-                            <label>Especialidad / Grado que imparte</label>
-                            <input type="text" name="especialidad" class="form-control" placeholder="Ej. Matemáticas, 1ro Primaria">
+                        
+                        <!-- NUEVO: Campos separados -->
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Especialidad</label>
+                                <input type="text" name="especialidad" class="form-control" value="{{ old('especialidad') }}" placeholder="Ej. Matemáticas">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Grado que imparte</label>
+                                <input type="text" name="grado" class="form-control" value="{{ old('grado') }}" placeholder="Ej. 1er año" required>
+                            </div>
                         </div>
+
                         <div class="form-group">
                             <label>Centro Educativo Asignado</label>
                             <select name="centro_id" class="form-control" required>
-                                <option value="" disabled selected>Seleccione una escuela...</option>
+                                <option value="" disabled {{ old('centro_id') ? '' : 'selected' }}>Seleccione una escuela...</option>
                                 @foreach($centros as $centro)
-                                    <option value="{{ $centro->id }}">{{ $centro->nombre }}</option>
+                                    <option value="{{ $centro->id }}" {{ old('centro_id') == $centro->id ? 'selected' : '' }}>{{ $centro->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -59,6 +68,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Especialidad</th>
+                                <th>Grado</th>
                                 <th>Escuela Asignada</th>
                                 <th>Acción</th>
                             </tr>
@@ -67,7 +77,8 @@
                             @foreach($docentes as $maestro)
                             <tr>
                                 <td class="font-weight-bold">{{ $maestro->nombre_completo }}</td>
-                                <td>{{ $maestro->especialidad ?? 'General' }}</td>
+                                <td>{{ $maestro->especialidad ?? 'N/A' }}</td>
+                                <td><span class="badge badge-info">{{ $maestro->grado ?? 'N/A' }}</span></td>
                                 <td><span class="badge bg-purple">{{ $maestro->centro->nombre }}</span></td>
                                 <td>
                                     <form action="{{ route('docentes.destroy', $maestro->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar a este profesor?');">
