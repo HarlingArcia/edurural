@@ -15,36 +15,40 @@ class DocenteController extends Controller
         return view('docentes', compact('docentes', 'centros'));
     }
 
-   public function store(Request $request)
+    public function store(Request $request)
     {
-       
+        // 1. Validar campos obligatorios y Cédula Única
         $request->validate([
             'nombre_completo' => 'required',
-            'grado' => 'required', // Ahora el grado es obligatorio
-            'centro_id' => 'required'
+            'cedula' => 'required|unique:docentes,cedula', // La cédula no se puede repetir
+            'centro_id' => 'required',
+            'grado' => 'required'
+        ], [
+            'cedula.unique' => 'Error: Esta cédula ya está registrada en otro maestro.'
         ]);
 
         $centro = Centro::findOrFail($request->centro_id);
         
-        // Convertimos el grado a minúsculas para compararlo
+        // Convertimos el grado a minúsculas para comparar
         $gradoIngresado = strtolower($request->grado);
 
-    
+        // 2. REGLAS DE RED: Secundaria vs Primaria
         if ((str_contains($gradoIngresado, 'secundaria') || str_contains($gradoIngresado, 'año')) && $centro->codigo !== 'C-01') {
             return back()
-                ->withInput()
-                ->with('error', 'Bloqueo del Sistema: Solo el Centro Base Fidel Castro Ruiz permite asignar maestros para Secundaria (1er a 3er año).');
+                ->withInput() 
+                ->with('error', 'Bloqueo: Solo el Centro Base Fidel Castro Ruiz permite maestros de Secundaria.');
         }
 
         if ((str_contains($gradoIngresado, 'primaria') || str_contains($gradoIngresado, 'grado')) && $centro->codigo === 'C-01') {
             return back()
                 ->withInput()
-                ->with('error', 'Bloqueo del Sistema: El Centro Base Fidel Castro Ruiz es exclusivo para maestros de Secundaria.');
+                ->with('error', 'Bloqueo: El Centro Base Fidel Castro Ruiz es exclusivo para maestros de Secundaria.');
         }
 
+        // 3. Guardar al profesor con todos los campos nuevos
         Docente::create($request->all());
         
-        return back()->with('success', 'Maestro registrado y asignado al centro exitosamente.');
+        return back()->with('success', 'Maestro registrado y asignado exitosamente.');
     }
 
     public function destroy($id)

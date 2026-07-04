@@ -9,8 +9,10 @@ class Docente extends Model
 {
     use HasFactory;
 
-    // Se agregó 'grado' a la lista
-    protected $fillable = ['nombre_completo', 'especialidad', 'grado', 'centro_id'];
+    protected $fillable = [
+        'nombre_completo', 'cedula', 'edad', 'telefono', 'lugar', 
+        'gmail', 'especialidad', 'grado', 'experiencia_laboral', 'centro_id'
+    ];
 
     public function centro()
     {

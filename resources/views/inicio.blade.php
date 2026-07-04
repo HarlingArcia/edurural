@@ -1,15 +1,33 @@
 @extends('adminlte::page')
-@section('title', 'EduRural - Inicio')
+@section('title', 'Programa MINED - Inicio')
+
 @section('content_header')
-    <h1>Panel de Inicio Global</h1>
+    <h1 class="text-dark font-weight-bold">Panel de Inicio Global</h1>
 @stop
 
 @section('content')
+    <!-- BANNER DE BIENVENIDA -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-primary text-white shadow-sm" style="border-radius: 10px;">
+                <div class="card-body p-4 text-center">
+                    <h3 class="font-weight-bold mb-3"><i class="fas fa-graduation-cap"></i> ¡Bienvenido al Sistema de Gestión MINED!</h3>
+                    <h5 class="font-italic" style="font-weight: 300;">
+                        "La educación no cambia el mundo, cambia a las personas que van a cambiar el mundo."
+                    </h5>
+                    <p class="mt-2 mb-0 text-sm opacity-75">— Paulo Freire</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANELES DE ESTADÍSTICAS -->
     <div class="row">
+        <!-- 1. Panel Estudiantes -->
         <div class="col-lg-4 col-6">
-            <div class="small-box bg-info">
+            <div class="small-box bg-info shadow-sm">
                 <div class="inner">
-                    <h3>{{ $totalEstudiantes }}</h3>
+                    <h3>{{ $totalEstudiantes ?? 0 }}</h3>
                     <p>Total Estudiantes (Red)</p>
                 </div>
                 <div class="icon">
@@ -19,10 +37,11 @@
             </div>
         </div>
         
+        <!-- 2. Panel Centros -->
         <div class="col-lg-4 col-6">
-            <div class="small-box bg-success">
+            <div class="small-box bg-success shadow-sm">
                 <div class="inner">
-                    <h3>{{ $totalCentros }}</h3>
+                    <h3>{{ $totalCentros ?? 0 }}</h3>
                     <p>Centros Interconectados</p>
                 </div>
                 <div class="icon">
@@ -32,10 +51,11 @@
             </div>
         </div>
         
+        <!-- 3. Panel Docentes -->
         <div class="col-lg-4 col-6">
-            <div class="small-box bg-purple">
+            <div class="small-box bg-purple shadow-sm">
                 <div class="inner">
-                    <h3>{{ $totalDocentes }}</h3>
+                    <h3>{{ $totalDocentes ?? 0 }}</h3>
                     <p>Total Docentes</p>
                 </div>
                 <div class="icon">
@@ -45,11 +65,12 @@
             </div>
         </div>
 
+        <!-- 4. Panel Asistencia -->
         <div class="col-lg-4 col-6">
-            <div class="small-box bg-warning">
+            <div class="small-box bg-warning shadow-sm">
                 <div class="inner">
-                    <h3>Asistencia</h3>
-                    <p>Control Diario</p>
+                    <h3 class="text-white">Asistencia</h3>
+                    <p class="text-white">Control Diario</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-calendar-check text-white"></i>
@@ -58,8 +79,9 @@
             </div>
         </div>
 
+        <!-- 5. Panel Calificaciones -->
         <div class="col-lg-4 col-6">
-            <div class="small-box bg-danger">
+            <div class="small-box bg-danger shadow-sm">
                 <div class="inner">
                     <h3>Notas</h3>
                     <p>Registro de Calificaciones</p>
@@ -71,8 +93,9 @@
             </div>
         </div>
 
+        <!-- 6. Panel Reportes -->
         <div class="col-lg-4 col-6">
-            <div class="small-box bg-primary">
+            <div class="small-box bg-primary shadow-sm">
                 <div class="inner">
                     <h3>Reportes</h3>
                     <p>Estadísticas MINED</p>
@@ -81,6 +104,20 @@
                     <i class="fas fa-chart-pie"></i>
                 </div>
                 <a href="{{ route('reportes.index') }}" class="small-box-footer">Ver reportes <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        <!-- 7. NUEVO: Panel Traslados -->
+        <div class="col-lg-4 col-6">
+            <div class="small-box bg-secondary shadow-sm">
+                <div class="inner">
+                    <h3>Traslados</h3>
+                    <p>Movimientos de Estudiantes</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <a href="{{ route('traslados.index') }}" class="small-box-footer">Gestionar traslados <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
     </div>

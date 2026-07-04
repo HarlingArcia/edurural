@@ -9,6 +9,7 @@ use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\CentroController;
 use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\TrasladoController;
 
 Route::get('/', [DashboardController::class, 'index']);
 Route::resource('estudiantes', EstudianteController::class);
@@ -25,5 +26,6 @@ Route::resource('centros', CentroController::class);
 
 Route::resource('docentes', DocenteController::class);
 
+Route::resource('traslados', TrasladoController::class);
 
 Auth::routes();
